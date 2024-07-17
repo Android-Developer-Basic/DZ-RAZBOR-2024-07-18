@@ -2,7 +2,9 @@ package otus.gbp.networking.net
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.decodeFromStream
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import otus.gbp.networking.data.Profile
@@ -13,6 +15,8 @@ interface GetProfile {
     suspend operator fun invoke(): Profile
 
     class Impl @Inject constructor(private val okHttpClient: OkHttpClient) : GetProfile {
+
+        @OptIn(ExperimentalSerializationApi::class)
         override suspend fun invoke(): Profile = withContext(Dispatchers.IO) {
             val request = Request.Builder()
                 .url("https://my-json-server.typicode.com/Android-Developer-Basic/Networking/profile")
@@ -22,7 +26,7 @@ interface GetProfile {
             okHttpClient.newCall(request).execute().let { response ->
                 if (!response.isSuccessful) throw IOException("Unexpected code $response")
                 val body = response.body ?: throw IOException("Empty body $response")
-                Json.decodeFromString(Profile.serializer(), body.string())
+                Json.decodeFromStream<Profile>(body.source().inputStream())
             }
         }
     }
