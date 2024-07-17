@@ -15,6 +15,7 @@ import okhttp3.OkHttpClient
 import otus.gbp.networking.data.ViewState
 import otus.gbp.networking.net.GetProfile
 import otus.gbp.networking.net.NetService
+import otus.gbp.networking.net.ResponseInterceptor
 import javax.inject.Inject
 
 @HiltViewModel
@@ -44,5 +45,7 @@ abstract class MainModule {
 @InstallIn(ViewModelComponent::class)
 class MainModuleProvider {
     @Provides
-    fun okHttp(): OkHttpClient = OkHttpClient.Builder().build()
+    fun okHttp(): OkHttpClient = OkHttpClient.Builder()
+        .addInterceptor(ResponseInterceptor())
+        .build()
 }
