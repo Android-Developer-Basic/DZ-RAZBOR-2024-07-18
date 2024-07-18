@@ -21,4 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "DZ-2024-07-18"
 include(":networking")
- 
+include(":components")
