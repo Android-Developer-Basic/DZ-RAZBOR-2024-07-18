@@ -42,9 +42,9 @@ class MainActivity : AppCompatActivity() {
 }
 
 data class MainActivityData(
-    val homeData: String = "",
-    val dashboardData: String = "",
-    val notificationsData: String = ""
+    val homeData: String = "Home text",
+    val dashboardData: String = "Dashboard text",
+    val notificationsData: String = "Notification text"
 )
 
 @Module

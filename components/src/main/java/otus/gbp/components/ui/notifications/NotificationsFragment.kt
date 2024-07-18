@@ -20,21 +20,43 @@ class NotificationsFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
+    private val notificationsViewModel: NotificationsViewModel by viewModels()
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val notificationsViewModel: NotificationsViewModel by viewModels()
 
         _binding = FragmentNotificationsBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textNotifications
-        notificationsViewModel.text.observe(viewLifecycleOwner) {
+        bindHomeText()
+        bindDashboardText()
+        bindNotificationText()
+
+        return root
+    }
+
+    private fun bindHomeText() {
+        val textView: TextView = binding.textHome
+        notificationsViewModel.homeText.observe(viewLifecycleOwner) {
             textView.text = it
         }
-        return root
+    }
+
+    private fun bindDashboardText() {
+        val textView: TextView = binding.textDashboard
+        notificationsViewModel.dashboardText.observe(viewLifecycleOwner) {
+            textView.setTextKeepState(it)
+        }
+    }
+
+    private fun bindNotificationText() {
+        val textView: TextView = binding.textNotifications
+        notificationsViewModel.notificationsText.observe(viewLifecycleOwner) {
+            textView.text = it
+        }
     }
 
     override fun onDestroyView() {

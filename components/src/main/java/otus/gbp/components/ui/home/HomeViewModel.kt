@@ -3,6 +3,7 @@ package otus.gbp.components.ui.home
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.map
 import dagger.hilt.android.lifecycle.HiltViewModel
 import otus.gbp.components.MainActivityData
 import otus.gbp.components.ObservableStorage
@@ -12,9 +13,7 @@ import javax.inject.Inject
 class HomeViewModel@Inject constructor(
     private val commonData: @JvmSuppressWildcards ObservableStorage<MainActivityData>
 ) : ViewModel() {
-
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is home Fragment"
-    }
-    val text: LiveData<String> = _text
+    val homeText: LiveData<String> = commonData.state.map { it.homeData }
+    val dashboardText: LiveData<String> = commonData.state.map { it.dashboardData }
+    val notificationsText: LiveData<String> = commonData.state.map { it.notificationsData }
 }

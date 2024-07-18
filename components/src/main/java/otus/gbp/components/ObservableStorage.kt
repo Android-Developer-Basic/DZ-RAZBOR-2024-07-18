@@ -10,6 +10,9 @@ class ObservableStorage<T>(value: T) {
 
     fun update(block: T.() -> T) {
         val currentValue = requireNotNull(_state.value) { "Misconfiguration. Value expected!" }
-        _state.postValue(currentValue.block())
+        val newValue = currentValue.block()
+        if (newValue != currentValue) {
+            _state.postValue(newValue)
+        }
     }
 }
