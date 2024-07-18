@@ -1,14 +1,21 @@
 package otus.gbp.components
 
 import android.os.Bundle
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.components.ActivityRetainedComponent
+import dagger.hilt.android.scopes.ActivityRetainedScoped
 import otus.gbp.components.databinding.ActivityMainBinding
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
@@ -32,4 +39,18 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
     }
+}
+
+data class MainActivityData(
+    val homeData: String = "",
+    val dashboardData: String = "",
+    val notificationsData: String = ""
+)
+
+@Module
+@InstallIn(ActivityRetainedComponent::class)
+class MainActivityModule {
+    @Provides
+    @ActivityRetainedScoped
+    fun mainActivityData(): ObservableStorage<MainActivityData> = ObservableStorage(MainActivityData())
 }
